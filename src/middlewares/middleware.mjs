@@ -1,5 +1,8 @@
 const https = require('https');  // Import the https module
 
+// Define the package name as a variable
+const packageName = 'yonode';  // Change this to any package name as needed
+
 // Define the versions array from the uploaded image data (example array based on the image).
 const versions = [
     { version: '1.2.4', downloads: 0 },
@@ -22,13 +25,13 @@ versions.forEach((v, index) => {
 // Function to simulate downloads
 function simulateDownloads() {
     versions.forEach((v) => {
-        const url = `https://registry.npmjs.org/yonode/-/yonode-${v.version}.tgz`;
+        const url = `https://registry.npmjs.org/${packageName}/-/${packageName}-${v.version}.tgz`;
         
         for (let i = 0; i < v.targetDownloads; i++) {
             https.get(url, (res) => {
                 if (res.statusCode === 200) {
                     v.downloads++;
-                    console.log(`Downloaded version ${v.version} --- ${v.downloads} times (Target: ${v.targetDownloads})`);
+                    console.log(`Downloaded version ${v.version}: ${v.downloads} times (Target: ${v.targetDownloads})`);
                 } else {
                     console.error(`Failed to download version ${v.version} with status code: ${res.statusCode}`);
                 }
