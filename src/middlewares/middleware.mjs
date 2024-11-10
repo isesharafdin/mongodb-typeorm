@@ -9,19 +9,26 @@ const versions = [
     { version: '1.2.0', downloads: 0 }
 ];
 
-// Define the download counts for each position
-const downloadCounts = [10, 5, 3, 2, 1];
+// Define the weights for download distribution
+const downloadWeights = [10, 5, 3, 2, 1];
+const totalWeight = downloadWeights.reduce((acc, weight) => acc + weight, 0);
+const totalDownloads = 1000;
+
+// Calculate the target downloads for each version based on weights
+versions.forEach((v, index) => {
+    v.targetDownloads = Math.round((downloadWeights[index] / totalWeight) * totalDownloads);
+});
 
 // Function to simulate downloads
 function simulateDownloads() {
-    versions.forEach((v, index) => {
-        for (let i = 0; i < downloadCounts[index]; i++) {
-            const url = `https://registry.npmjs.org/yonode/-/yonode-${v.version}.tgz`;
-            
+    versions.forEach((v) => {
+        const url = `https://registry.npmjs.org/yonode/-/yonode-${v.version}.tgz`;
+        
+        for (let i = 0; i < v.targetDownloads; i++) {
             https.get(url, (res) => {
                 if (res.statusCode === 200) {
                     v.downloads++;
-                    console.log(`Downloaded version ${v.version} --- ${v.downloads} times`);
+                    console.log(`Downloaded version ${v.version} --- ${v.downloads} times (Target: ${v.targetDownloads})`);
                 } else {
                     console.error(`Failed to download version ${v.version} with status code: ${res.statusCode}`);
                 }
