@@ -1,4 +1,4 @@
-const https = require('https');  // Import the https module
+import https from 'https';  // Import the https module
 
 // Define the package name as a variable
 const packageName = 'yonode';  // Change this to any package name as needed
